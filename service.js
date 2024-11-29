@@ -47,20 +47,28 @@ export const separateMessagesByPerson = (jsonData) => {
         messages.forEach((message) => {
             const splitMessage = message.text.split(/[ \.\n]+/);
             splitMessage.forEach((word) => {
-                if (wordCountMap[word]) {
-                    wordCountMap[word] += 1;
-                } else {
-                    wordCountMap[word] = 1;
+                const alphanumericWord = word.replace(/[^a-zA-Z0-9]/g, '');
+            
+                if (alphanumericWord) {
+                    if (wordCountMap[alphanumericWord]) {
+                        wordCountMap[alphanumericWord] += 1;
+                    } else {
+                        wordCountMap[alphanumericWord] = 1;
+                    }
                 }
-            })
+            });
         })
         return wordCountMap;
     }
 
     const personOneWordCount = wordCount(personOneMessages);
     const personTwoWordCount = wordCount(personTwoMessages);
-    console.log("personOneWordCount" , personOneWordCount);
-    console.log(personTwoWordCount);
+
+
+    return {
+        [personOneName]: personOneWordCount,
+        [personTwoName]: personTwoWordCount,
+    }
 
 
   };
